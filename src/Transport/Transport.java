@@ -1,9 +1,13 @@
 package Transport;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Transport {
     private String brand;
     private String model;
     private double engineVolume;
+    List<Mechanic> mechanics = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -11,7 +15,16 @@ public abstract class Transport {
                 "brand='" + brand + '\'' +
                 ", model='" + model + '\'' +
                 ", engineVolume=" + engineVolume +
+                ", mechanics=" + mechanics +
                 '}';
+    }
+
+    public List<Mechanic> getMechanics() {
+        return mechanics;
+    }
+
+    public void setMechanics(List<Mechanic> mechanics) {
+        this.mechanics = mechanics;
     }
 
     public String getBrand() {

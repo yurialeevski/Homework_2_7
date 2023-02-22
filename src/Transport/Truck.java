@@ -1,16 +1,26 @@
 package Transport;
 
+import java.util.List;
+
 public class Truck<T extends Driver_Category_C> extends Transport implements Competing {
     private final T driver;
     private final LoadCapacity loadCapacity;
     private final Type type;
-    public Truck(String brand, String model, double engineVolume, T driver, LoadCapacity loadCapacity, Type type) {
+    private final List<Mechanic> mechanics;
+    public Truck(String brand,
+                 String model,
+                 double engineVolume,
+                 T driver,
+                 LoadCapacity loadCapacity,
+                 Type type,
+                 List<Mechanic> mechanics) {
         setBrand(defaultBrandOrModel(brand));
         setModel(defaultBrandOrModel(model));
         setEngineVolume(defaultEngineVolume(engineVolume));
         this.driver = driver;
         this.loadCapacity = loadCapacity;
         this.type = type;
+        this.mechanics = mechanics;
     }
     @Override
     public String toString() {
@@ -20,8 +30,15 @@ public class Truck<T extends Driver_Category_C> extends Transport implements Com
                 ", model='" + getModel() + '\'' +
                 ", engineVolume=" + getEngineVolume() +
                 ", loadCapacity=" + loadCapacity +
-                ", driver=" + driver +
+                ", driver=" + driver + "\n" +
+                " список механиков для этого грузовика " +
+                mechanics +
                 "}}";
+    }
+
+    @Override
+    public List<Mechanic> getMechanics() {
+        return mechanics;
     }
     @Override
     public void startMovement() {
@@ -72,5 +89,16 @@ public class Truck<T extends Driver_Category_C> extends Transport implements Com
     @Override
     public void passCarDiagnostics() {
         System.out.println("Грузовой автомобиль " + getBrand() + " " + getModel() + " проходит диагностику.");
+    }
+    public void printDriverAndMechanicsInfo() {
+        System.out.print("Грузовиком " + getBrand() + " " + getModel() +
+                " управляет водитель " + driver.getFullName() + ", ");
+        System.out.println("обслуживают и ремонтируют грузовик механики: ");
+        printMechanics();
+    }
+    public void printMechanics() {
+        for(int i = 0; i < mechanics.size(); i++) {
+            System.out.println(mechanics.get(i).getNameAndFamilyName() + ", компания - " + mechanics.get(i).getMechanicCompany());
+        }
     }
 }
