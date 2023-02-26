@@ -1,17 +1,27 @@
 package Transport;
 
+import java.util.List;
+
 public class PassengerCar<T extends Driver_Category_B> extends Transport implements Competing {
 
     private final T driver;
     private final PassengerCarBodyType bodyType;
     private final Type type;
-    public PassengerCar(String brand, String model, double engineVolume, T driver, PassengerCarBodyType bodyType, Type type) {
+    private final List<Mechanic> mechanics;
+    public PassengerCar(String brand,
+                        String model,
+                        double engineVolume,
+                        T driver,
+                        PassengerCarBodyType bodyType,
+                        Type type,
+                        List<Mechanic> mechanics) {
         setBrand(defaultBrandOrModel(brand));
         setModel(defaultBrandOrModel(model));
         setEngineVolume(defaultEngineVolume(engineVolume));
         this.driver = driver;
         this.bodyType = bodyType;
         this.type = type;
+        this.mechanics = mechanics;
     }
 
     @Override
@@ -23,10 +33,15 @@ public class PassengerCar<T extends Driver_Category_B> extends Transport impleme
                 ", model='" + getModel() + '\'' +
                 ", engineVolume=" + getEngineVolume() +
                 ", bodyType=" + bodyType +
-                ", driver=" + driver +
+                ", driver=" + driver + "\n" +
+                " список механиков для этого автомобиля " +
+                mechanics +
                 "}}";
     }
 
+    public List<Mechanic> getMechanics() {
+        return mechanics;
+    }
 
     @Override
     public void startMovement() {
@@ -80,5 +95,16 @@ public class PassengerCar<T extends Driver_Category_B> extends Transport impleme
     @Override
     public void passCarDiagnostics() {
         System.out.println("Легковой автомобиль " + getBrand() + " " + getModel() + " проходит диагностику.");
+    }
+    public void printDriverAndMechanicsInfo() {
+        System.out.print("Автомобилем " + getBrand() + " " + getModel() +
+                            " управляет водитель " + driver.getFullName() + ", ");
+        System.out.println("обслуживают и ремонтируют автомобиль механики: ");
+                             printMechanics();
+    }
+    public void printMechanics() {
+        for(int i = 0; i < mechanics.size(); i++) {
+            System.out.println(mechanics.get(i).getNameAndFamilyName() + ", компания - " + mechanics.get(i).getMechanicCompany());
+        }
     }
 }
